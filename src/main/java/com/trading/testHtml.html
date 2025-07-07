@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Live Price for AAPL</h2>
+<button onclick="getPrice()">Get USD Price</button>
+<pre id="priceOutput"></pre>
+
+<h2>Place Order</h2>
+<button onclick="placeOrder()">Buy 10 AAPL</button>
+<pre id="orderOutput"></pre>
+
+<script>
+    function getPrice() {
+        fetch("http://localhost:8080/price?symbol=AAPL&currency=USD")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("priceOutput").textContent = JSON.stringify(data, null, 2);
+            });
+    }
+
+    function placeOrder() {
+        fetch("http://localhost:8080/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ symbol: "AAPL", qty: 10 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("orderOutput").textContent = JSON.stringify(data, null, 2);
+            });
+    }
+</script>
+</body>
+</html>

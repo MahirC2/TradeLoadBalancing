@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "order";
+option java_outer_classname = "OrderProto";
+
+service OrderService{
+  rpc PlaceOrder (OrderRequest) returns (OrderResponse);
+}
+
+message OrderRequest{
+  string orderId = 1; // Unique identifier for the order
+  string symbol = 2; // Ticker symbol, e.g. "AAPL"
+  double qty = 3;  // Quantity of the asset to order.
+  enum OrderType {
+    MARKET = 0;
+    LIMIT = 1;
+  }
+  OrderType type = 4;
+}
+
+message OrderResponse
+{
+  string status = 1; // e.g "SUCCESS", "FAILED"
+  string executionTime = 2; // Timestamp or execution time
+  string message = 3; // Additional info or error message.
+}

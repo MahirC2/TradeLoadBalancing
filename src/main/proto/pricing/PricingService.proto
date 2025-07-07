@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_package = "pricing";
+option java_outer_classname = "PricingProto";
+
+service PricingService{
+  rpc GetPrice (PriceRequest) returns (PriceResponse);
+}
+
+message PriceRequest {
+  string tickerSymbol = 1;       // e.g., "AAPL", "GOOG"
+  string currency = 2;           // e.g., "USD", "EUR" (FX-converted pricing)
+  string timestamp = 3;          // For historical pricing or snapshot in time
+
+  // Maybe add priceType later?
+  //string priceType = 5;          // e.g., "LAST_TRADE", "BID", "ASK", "OPEN", "CLOSE"
+
+  // Maybe add exchange specific?
+  //string exchange = 2;           // e.g., "NASDAQ", "NYSE" (optional but useful)
+}
+
+
+message PriceResponse {
+  string tickerSymbol = 1;
+  string currency = 2;
+  double price = 3; // Use double for precision; decimal not supported natively in proto
+  string asOf = 4; // The actual timestamp for the price (market close, tick time, etc.)
+  string status = 5; // e.g., "OK", "NOT_FOUND", "ERROR", etc.
+  map<string, string> metadata = 6; // Optional data.
+
+  // Maybe add source later?
+  // string source = 7; // e.g., "NASDAQ", "Bloomberg", "Internal"
+
+  // Maybe add priceType later?
+  // string priceType = 5; // Same values as in the request
+
+  // Maybe add exchange specific?
+  // string exchange = 2;           // e.g., "NASDAQ", "NYSE" (optional but useful)
+}
